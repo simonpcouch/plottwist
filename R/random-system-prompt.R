@@ -1,5 +1,5 @@
 random_system_prompt <- function() {
-  prompts_dir <- system.file("prompts/system", package = "plottwist")
+  prompts_dir <- system.file("prompts/random-system", package = "plottwist")
   sections <- list.dirs(prompts_dir, full.names = TRUE, recursive = FALSE)
 
   sections <- c(sections[1], sample(sections[-1]))
