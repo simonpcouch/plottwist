@@ -16,6 +16,11 @@
 #'
 #' @seealso [pt_dataset], [pt_solver], [pt_scorer], [vitals::Task]
 #'
+#' @examplesIf FALSE
+#' chat <- ellmer::chat_anthropic()
+#' tsk <- pt_task()
+#' tsk$eval(solver_chat = chat)
+#'
 #' @export
 pt_task <- function(
     epochs = 1,
