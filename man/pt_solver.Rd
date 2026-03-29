@@ -21,6 +21,7 @@ and \code{solver_chat} (list of Chat objects).
 \description{
 Walks a language model through a multi-turn data analysis conversation.
 For each sample, the solver copies the data file into a temporary directory,
-creates a \link{random_agent}, and chats through each turn (picking one phrasing
-at random). The model's final response is returned as the result.
+creates an agent with randomly generated prompting, and chats through each
+turn (picking one phrasing at random). The model's final response is
+returned as the result.
 }

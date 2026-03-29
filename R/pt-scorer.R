@@ -23,7 +23,7 @@
 pt_scorer <- function(
     samples,
     ...,
-    scorer_chat = ellmer::chat_anthropic(model = "claude-sonnet-4-5-20250929")
+    scorer_chat = ellmer::chat_anthropic(model = "claude-sonnet-4-6")
 ) {
   n <- nrow(samples)
   grades <- rep(NA_character_, n)
