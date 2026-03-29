@@ -9,7 +9,8 @@ Please read:
 
 I've cloned a couple repositories into `inst/sandbox` that should be treated as a read-only reference:
 
-* bluffbench: A similar evaluation, measure LLMs' ability to "see" plots that contradict their expectations.
+* bluffbench: A similar evaluation, measuring LLMs' ability to "see" plots that contradict their expectations. Useful reference for solver/scorer patterns.
+* helperbench: An evaluation measuring LLMs' ability to perform refactoring tasks. Its solver has useful patterns for creating isolated working directories and managing `setwd()` during evaluation.
 * ellmer: A package for interacting with LLMs in R.
 
 ## Adding samples
