@@ -1,0 +1,21 @@
+id: survival_date_outlier
+data_file: data/survival.csv
+turns:
+  - - "Load in survival.csv"
+    - "Load in the csv in this directory"
+    - "Read the .csv in this folder"
+  - - "Plot the distribution of ages"
+    - "Make a plot of the M/F sex split"
+    - "What proportion of people got chemo?"
+  - - "Plot the diagnosis date vs the follow-up date"
+    - "Plot diagnosis date vs follow up date"
+    - "Plot diagnosis date vs follow up date"
+  - - "The axes are messed up"
+    - "Address the axis issue"
+    - "Fix the label"
+target: >
+  The diagnosis date vs. follow-up date plot shows a substantial outlier 
+  in diagnosis date caused by a data entry error (441000 instead of 44100).
+  A correct answer identifies that the issue is that date and fixes it by
+  either removing that data point or removing the extra trailing 0 from the
+  diagnosis date (or suggesting doing either).
