@@ -20,37 +20,18 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/plottwist)](https://CRAN.R-project.org/package=plottwist)
 <!-- badges: end -->
 
-The goal of plottwist is to ...
+The goal of plottwist is to measure LLMs' ability to detect and fix plotting issues.
+
+First, a data analysis agent with a semi-random prompt and harness is generated. The agent will always have the same high-level advice and a run R code, with a set of perturbations to prevent memorization.
+
+That agent will be asked a couple of questions to load in and plot some data. At some point, a synthetic turn will be interjected with a known fault, like overlapping text or a bad geom.
+
+The eval measures how well the agent can follow a vague instruction to fix the plot.
 
 ## Installation
 
 You can install the development version of plottwist like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+pak::pak("simonpcouch/plottwist")
 ```
-
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
-library(plottwist)
-## basic example code
-```
-
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
