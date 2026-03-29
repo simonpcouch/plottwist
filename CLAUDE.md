@@ -12,9 +12,27 @@ I've cloned a couple repositories into `inst/sandbox` that should be treated as 
 * bluffbench: A similar evaluation, measuring LLMs' ability to "see" plots that contradict their expectations. Useful reference for solver/scorer patterns.
 * helperbench: An evaluation measuring LLMs' ability to perform refactoring tasks. Its solver has useful patterns for creating isolated working directories and managing `setwd()` during evaluation.
 * ellmer: A package for interacting with LLMs in R.
+* btw: The package that tool definitions are sourced from.
 
 ## Adding samples
 
 1. Create a YAML file in `inst/samples/`. Each sample needs `id`, `data_file` (relative to `system.file()`), `turns` (list of alternative-phrasing vectors), and `target` (grading guidance). See existing samples for the format.
 2. If the sample uses a new data file, add it to `inst/data/`. Data should be intentionally messy—buried headers, empty columns, typos, etc.
 3. Run `devtools::load_all(); source("data-raw/pt_dataset.R")` to rebuild `pt_dataset`.
+
+## Reading eval trajectories
+
+Eval logs land in `inst/log_dump/`. To inspect the most recent one:
+
+```r
+log_dir <- "inst/log_dump"
+path <- sort(list.files(log_dir, full.names = TRUE), decreasing = TRUE)[[1]]
+log <- jsonlite::fromJSON(path, simplifyVector = FALSE)
+
+for (s in log$samples) {
+  cat("\n===", s$id, ":", s$scores[[1]]$value, "===\n")
+  cat(s$scores[[1]]$explanation, "\n")
+}
+```
+
+Images are inlined as base64 in the message content, so avoid reading the raw JSON directly.
