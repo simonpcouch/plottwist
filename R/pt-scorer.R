@@ -118,15 +118,25 @@ solver_r_tool_succeeded <- function(chat) {
 solver_made_plot <- function(chat) {
   for (turn in chat$get_turns()) {
     for (content in turn@contents) {
-      if (
-        inherits(content, "ellmer::ContentImageInline") ||
-          inherits(content, "ellmer::ContentImageRemote")
-      ) {
+      if (is_image(content)) {
         return(TRUE)
+      }
+      # btw's run R tool nests images inside ContentToolResult$value
+      if (inherits(content, "ellmer::ContentToolResult") && is.list(content@value)) {
+        for (item in content@value) {
+          if (is_image(item)) {
+            return(TRUE)
+          }
+        }
       }
     }
   }
   FALSE
+}
+
+is_image <- function(content) {
+  inherits(content, "ellmer::ContentImageInline") ||
+    inherits(content, "ellmer::ContentImageRemote")
 }
 
 # --- LLM judge --------------------------------------------------------------
@@ -185,22 +195,31 @@ chat_to_markdown <- function(chat) {
     turn <- turns[[i]]
     role <- if (inherits(turn, "ellmer::UserTurn")) "User" else "Assistant"
 
-    contents <- vapply(turn@contents, function(content) {
-      if (
-        inherits(content, "ellmer::ContentImageInline") ||
-          inherits(content, "ellmer::ContentImageRemote")
-      ) {
-        "[image]"
-      } else {
-        ellmer::contents_markdown(content) %||% ""
-      }
-    }, character(1))
+    contents <- vapply(turn@contents, content_to_markdown, character(1))
 
     contents <- contents[nzchar(contents)]
     parts[i] <- paste0("**", role, ":** ", paste(contents, collapse = "\n\n"))
   }
 
   paste(parts, collapse = "\n\n")
+}
+
+# Converts a single Content object to markdown, replacing images with
+# a placeholder. For tool results whose value is a list of content objects,
+# renders each sub-item (replacing nested images too).
+content_to_markdown <- function(content) {
+  if (is_image(content)) {
+    return("[image]")
+  }
+
+  if (inherits(content, "ellmer::ContentToolResult") && is.list(content@value)) {
+    parts <- vapply(content@value, function(item) {
+      if (is_image(item)) "[image]" else ellmer::contents_markdown(item) %||% ""
+    }, character(1))
+    return(paste(parts[nzchar(parts)], collapse = "\n\n"))
+  }
+
+  ellmer::contents_markdown(content) %||% ""
 }
 
 mock_scorer_chat <- function(scorer_chat, explanation) {
