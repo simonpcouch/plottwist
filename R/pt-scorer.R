@@ -159,6 +159,11 @@ The Target describes the data quality issue and what a correct fix looks like.
 Does the conversation show the assistant identifying the issue and fixing it
 (or proposing a fix)? The fix may appear in tool calls, code, or text.
 
+Note: The user messages in this conversation are scripted. In particular,
+messages like 'fix the plot' or 'that doesn't look right' are sent
+automatically regardless of whether the assistant already caught the issue.
+Do not penalize the assistant for not being sure what to do with those prompts if it had caught the issue already.
+
 {scorer_instructions()}"
   )
 }
