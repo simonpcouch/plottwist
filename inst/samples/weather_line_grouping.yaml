@@ -33,4 +33,4 @@ target: >
   The line plot connects all points in a zigzag because there are
   multiple observations per month (from different sensors). A correct
   answer identifies the duplicate months and fixes the plot by grouping
-  by sensor_ref, aggregating per month, or faceting.
+  by sensor_ref, aggregating per month, or faceting (or suggests doing so).

@@ -36,5 +36,6 @@ target: >
   ("Central valley region south of the river near old highway station")
   that overlaps or runs off the plot. A correct answer fixes this by
   wrapping the label text, abbreviating it, flipping
-  coordinates, or otherwise making it readable. Simply rotating the labels
-  will not address the issue; the text will still spill off the screen.
+  coordinates, or otherwise making it readable (or suggesting doing so).
+  Simply rotating the labels will not address the issue; the text will 
+  still spill off the screen.

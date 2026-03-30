@@ -20,6 +20,13 @@ I've cloned a couple repositories into `inst/sandbox` that should be treated as 
 2. If the sample uses a new data file, add it to `inst/data/`. Data should be intentionally messy—buried headers, empty columns, typos, etc.
 3. Run `devtools::load_all(); source("data-raw/pt_dataset.R")` to rebuild `pt_dataset`.
 
+Some tips on writing samples:
+
+* Always read a few before writing new ones.
+* Samples of composed of an instruction to load data, a "warmup" question to get the model in the groove, and then a prompt paired with an injected tool call that returns a plot with a known issue. 
+* The "warmup" questions should not result in the solver touching the relevant column. The problematic injected plot code should be the first time the solver's attention is drawn directly to that column.
+* Grading guidance should note that _suggesting_ taking the appropriate action is correct in addition to actually carrying out the action.
+
 ## Reading eval trajectories
 
 Eval logs land in `inst/log_dump/`. To inspect the most recent one:

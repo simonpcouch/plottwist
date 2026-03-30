@@ -31,4 +31,4 @@ target: >
   The bar chart has 32 patient names on the x-axis that overlap and are
   unreadable. A correct answer fixes the readability by rotating the
   labels (e.g., angle = 45 or 90), flipping coordinates, reordering
-  bars, or otherwise making the names legible.
+  bars, or otherwise making the names legible (or suggesting doing so).
