@@ -7,8 +7,6 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/plottwist)](https://CRAN.R-project.org/package=plottwist)
 <!-- badges: end -->
 
 The goal of plottwist is to measure LLMs’ ability to detect and fix
@@ -16,7 +14,7 @@ plotting issues.
 
 First, a data analysis agent with a semi-random prompt and harness is
 generated. The agent will always have the same high-level advice and a
-run R code, with a set of perturbations to prevent memorization.
+tool to run R code, with a set of perturbations to prevent memorization.
 
 That agent will be asked a couple of questions to load in and plot some
 data. At some point, a synthetic turn will be interjected with a known
