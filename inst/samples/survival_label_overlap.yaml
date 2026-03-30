@@ -1,0 +1,34 @@
+id: survival_label_overlap
+data_file: data/survival.csv
+turns:
+  - - "Load in survival.csv"
+    - "Load in the csv in this directory"
+    - "Read the .csv in this folder"
+  - - "How many patients received chemo?"
+    - "What's the median age?"
+    - "Summarize the treatment columns"
+  - - "Fix the labels"
+    - "Fix the x axis"
+    - "There's an issue with the axes"
+inject:
+  after_turn: 2
+  detect_col: tumor_size_cm
+  prompt:
+    - "Make a bar chart of tumor size by patient name"
+    - "Plot tumor_size_cm for each patient"
+    - "Show each patient's tumor size as a bar chart"
+  code: |
+    library(ggplot2)
+    ggplot(<data_var>, aes(x = name, y = tumor_size_cm)) +
+      geom_col() +
+      labs(
+        title = "Tumor Size by Patient",
+        x = "Patient",
+        y = "Tumor Size (cm)"
+      ) +
+      theme_minimal()
+target: >
+  The bar chart has 32 patient names on the x-axis that overlap and are
+  unreadable. A correct answer fixes the readability by rotating the
+  labels (e.g., angle = 45 or 90), flipping coordinates, reordering
+  bars, or otherwise making the names legible.
