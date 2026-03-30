@@ -20,13 +20,15 @@ tool_result <- function(name = "run_r", id = "abc", error = NULL) {
 
 # extract_grade ---------------------------------------------------------------
 
-test_that("extract_grade extracts C and I", {
+test_that("extract_grade extracts C, P, and I", {
   expect_equal(extract_grade("Looks good. GRADE: C"), "C")
+  expect_equal(extract_grade("Partial. GRADE: P"), "P")
   expect_equal(extract_grade("Wrong. GRADE: I"), "I")
 })
 
 test_that("extract_grade is case insensitive", {
   expect_equal(extract_grade("grade: c"), "C")
+  expect_equal(extract_grade("grade: p"), "P")
   expect_equal(extract_grade("Grade: i"), "I")
 })
 

@@ -16,8 +16,11 @@
 #' @param ... Additional arguments (currently unused).
 #' @param scorer_chat An ellmer Chat object for the LLM judge.
 #'
-#' @return A list with `score` (ordered factor with levels `I` < `C`),
-#'   `scorer_chat`, and `scorer_metadata`.
+#' @return A list with `score` (ordered factor with levels `I` < `P` < `C`),
+#'   `scorer_chat`, and `scorer_metadata`. `C` (correct) means the model
+#'   caught and fixed the issue on its own. `P` (partial) means it only
+#'   fixed the issue after being nudged. `I` (incorrect) means it never
+#'   fixed the issue.
 #'
 #' @export
 pt_scorer <- function(
@@ -74,7 +77,7 @@ pt_scorer <- function(
   }
 
   list(
-    score = factor(grades, levels = c("I", "C"), ordered = TRUE),
+    score = factor(grades, levels = c("I", "P", "C"), ordered = TRUE),
     scorer_chat = scorer_chats,
     scorer_metadata = as.list(explanations)
   )
@@ -144,7 +147,7 @@ is_image <- function(content) {
 format_scorer_prompt <- function(transcript, target) {
   glue::glue(
     "You are evaluating whether the assistant correctly identified and
-fixed a data quality issue during a multi-turn conversation.
+fixed a plot issue during a multi-turn conversation.
 
 [BEGIN DATA]
 ************
@@ -155,14 +158,27 @@ fixed a data quality issue during a multi-turn conversation.
 ************
 [END DATA]
 
-The Target describes the data quality issue and what a correct fix looks like.
-Does the conversation show the assistant identifying the issue and fixing it
-(or proposing a fix)? The fix may appear in tool calls, code, or text.
+The Target describes the plot issue and what a correct fix looks like.
 
-Note: The user messages in this conversation are scripted. In particular,
-messages like 'fix the plot' or 'that doesn't look right' are sent
-automatically regardless of whether the assistant already caught the issue.
-Do not penalize the assistant for not being sure what to do with those prompts if it had caught the issue already.
+This evaluation works as follows: the assistant is given a dataset and
+asked to make a plot. The plot is injected into the conversation as a
+synthetic tool call (the assistant did not actually write the code, but
+it appears in the transcript as if it did). The plot contains an issue
+described in the Target. After the injected plot, the user sends a
+vague nudge like 'fix the plot' or 'there's an issue with the axes'
+regardless of whether the assistant already noticed the problem.
+
+Score the assistant as follows:
+- C (correct): The assistant identified and fixed (or proposed fixing)
+  the issue ON ITS OWN, before or without relying on the user's nudge.
+  This means the assistant's first response after the injected plot
+  already calls out the problem.
+- P (partial): The assistant only identified and fixed the issue AFTER
+  the user's nudge prompted it to look again.
+- I (incorrect): The assistant never identified or fixed the issue.
+
+Do not penalize the assistant for being confused by the nudge if it
+had already caught the issue—the nudge is sent regardless.
 
 {scorer_instructions()}"
   )
@@ -170,9 +186,10 @@ Do not penalize the assistant for not being sure what to do with those prompts i
 
 scorer_instructions <- function() {
   "After assessing the response, reply with 'GRADE: $LETTER' where
-LETTER is one of C or I.
-Please choose ONE option: either 'C' for correct answers or 'I' for
-incorrect answers.
+LETTER is one of C, P, or I.
+Please choose ONE option: 'C' for correct (caught it unprompted),
+'P' for partial (fixed only after the nudge), or 'I' for incorrect
+(never fixed).
 First **briefly** explain your reasoning, then end with GRADE: $LETTER.
 Do not format the grading string and do not include any punctuation or
 exposition after it."
@@ -181,7 +198,7 @@ exposition after it."
 extract_grade <- function(response) {
   match <- regmatches(
     response,
-    regexec("(?i)GRADE\\s*:\\s*([CI])", response, perl = TRUE)
+    regexec("(?i)GRADE\\s*:\\s*([CPI])", response, perl = TRUE)
   )[[1]][2]
 
   if (is.na(match)) NA_character_ else toupper(match)
