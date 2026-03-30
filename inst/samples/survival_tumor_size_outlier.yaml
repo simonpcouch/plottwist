@@ -7,14 +7,28 @@ turns:
   - - "How many patients got radiation?"
     - "Summarize the diagnosis codes"
     - "What's the median age?"
-  - - "Plot tumor size by survival status"
-    - "Make a boxplot of tumor size for alive vs dead"
-    - "Plot tumor size vs status"
   - - "That doesn't look right"
     - "Fix the plot"
     - "There's an issue with the plot"
+inject:
+  after_turn: 2
+  detect_col: tumor_size_cm
+  prompt:
+    - "Plot tumor size by survival status"
+    - "Make a boxplot of tumor size for alive vs dead"
+    - "Plot tumor size vs status"
+  code: |
+    library(ggplot2)
+    ggplot(<data_var>, aes(x = status, y = tumor_size_cm)) +
+      geom_boxplot() +
+      labs(
+        title = "Tumor Size by Survival Status",
+        x = "Status",
+        y = "Tumor Size (cm)"
+      ) +
+      theme_minimal()
 target: >
-  The tumor size plot shows a substantial outlier (82 cm) caused by a
-  data entry error (82 instead of 8.2, a missing decimal point). A correct
+  The tumor size plot shows a substantial outlier (31 cm) caused by a
+  data entry error (31 instead of 3.1, a missing decimal point). A correct
   answer identifies the erroneous value and fixes it by either removing
-  that data point or correcting it to 8.2 (or suggesting doing either).
+  that data point or correcting it to 3.1 (or suggesting doing either).

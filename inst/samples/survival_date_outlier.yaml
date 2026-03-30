@@ -7,14 +7,30 @@ turns:
   - - "Plot the distribution of ages"
     - "Make a plot of the M/F sex split"
     - "What proportion of people got chemo?"
-  - - "Plot the diagnosis date vs the follow-up date"
-    - "Plot diagnosis date vs follow up date"
-    - "Plot diagnosis date vs follow up date"
   - - "The axes are messed up"
     - "Address the axis issue"
-    - "Fix the label"
+    - "Fix the plot"
+inject:
+  after_turn: 2
+  detect_col: dx_date
+  prompt:
+    - "Plot the diagnosis date vs the follow-up date"
+    - "Plot diagnosis date vs follow up date"
+    - "Make a scatter plot of dx_date vs followup_date"
+  code: |
+    library(ggplot2)
+    <data_var>$dx_date_conv <- as.Date(<data_var>$dx_date, origin = "1899-12-30")
+    <data_var>$followup_date_conv <- as.Date(<data_var>$followup_date, origin = "1899-12-30")
+    ggplot(<data_var>, aes(x = dx_date_conv, y = followup_date_conv)) +
+      geom_point(size = 2, alpha = 0.6) +
+      labs(
+        title = "Diagnosis Date vs Follow-up Date",
+        x = "Diagnosis Date",
+        y = "Follow-up Date"
+      ) +
+      theme_minimal()
 target: >
-  The diagnosis date vs. follow-up date plot shows a substantial outlier 
+  The diagnosis date vs. follow-up date plot shows a substantial outlier
   in diagnosis date caused by a data entry error (441000 instead of 44100).
   A correct answer identifies that the issue is that date and fixes it by
   either removing that data point or removing the extra trailing 0 from the
