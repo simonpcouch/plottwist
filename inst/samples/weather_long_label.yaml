@@ -1,0 +1,40 @@
+id: weather_long_label
+data_file: data/weather.csv
+turns:
+  - - "Load in weather.csv"
+    - "Read the csv in this directory"
+    - "Load the .csv in this folder"
+  - - "What's the average humidity?"
+    - "Summarize the temperature values"
+    - "Which region has the most precipitation?"
+  - - "Fix the axis"
+    - "There's an issue with the labels"
+    - "Fix the plot"
+inject:
+  after_turn: 2
+  detect_col: avg_temp
+  prompt:
+    - "Plot average temperature by region as a bar chart"
+    - "Make a bar chart of avg_temp grouped by region"
+    - "Show mean temperature for each region"
+  code: |
+    library(ggplot2)
+    library(dplyr)
+    region_avg <- <data_var> %>%
+      group_by(region) %>%
+      summarise(avg_temp = mean(avg_temp, na.rm = TRUE))
+    ggplot(region_avg, aes(x = region, y = avg_temp)) +
+      geom_col() +
+      labs(
+        title = "Average Temperature by Region",
+        x = "Region",
+        y = "Temperature (°F)"
+      ) +
+      theme_minimal()
+target: >
+  One region label is an extremely long string
+  ("Central valley region south of the river near old highway station")
+  that overlaps or runs off the plot. A correct answer fixes this by
+  wrapping the label text, abbreviating it, flipping
+  coordinates, or otherwise making it readable. Simply rotating the labels
+  will not address the issue; the text will still spill off the screen.
