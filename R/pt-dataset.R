@@ -14,6 +14,11 @@
 #'     per evaluation run.
 #'   - `data_file`: Path to the data file, relative to
 #'     `system.file(package = "plottwist")`.
+#'   - `inject`: `NULL`, or a list with `after_turn` (integer), `prompt`
+#'     (character vector of alternative phrasings), and `code` (string of
+#'     R code). When present, the solver injects a synthetic tool call
+#'     between turns, executing `code` to produce a plot and splicing the
+#'     result into the chat history as if the model wrote it.
 #' * `target`: Description of the data issue the model should detect.
 #'
 #' @format A tibble with columns `id`, `input`, and `target`.

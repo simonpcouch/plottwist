@@ -12,7 +12,8 @@ pt_dataset <- purrr::map(sample_paths, yaml::read_yaml) |>
       id = sample$id,
       input = list(tibble::tibble(
         turns = list(sample$turns),
-        data_file = sample$data_file
+        data_file = sample$data_file,
+        inject = list(sample$inject)
       )),
       target = sample$target
     )
