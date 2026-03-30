@@ -33,4 +33,6 @@ target: >
   instead of chronologically because the month column is character.
   The line plot zigzags as a result. A correct answer reorders the months
   (e.g., using a factor with proper levels) and re-plots (or suggests
-  doing so).
+  doing so). If the model already converted months to an ordered factor
+  during data loading (before the injected plot), the plot will look
+  correct from the start—this should be graded as C.
