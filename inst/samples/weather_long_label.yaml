@@ -6,7 +6,7 @@ turns:
     - "Load the .csv in this folder"
   - - "What's the average humidity?"
     - "Summarize the temperature values"
-    - "Which region has the most precipitation?"
+    - "What's the distribution of precipitation?"
   - - "Fix the axis"
     - "There's an issue with the labels"
     - "Fix the plot"
