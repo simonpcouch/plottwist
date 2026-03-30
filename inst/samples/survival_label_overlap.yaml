@@ -14,9 +14,9 @@ inject:
   after_turn: 2
   detect_col: tumor_size_cm
   prompt:
-    - "Make a bar chart of tumor size by patient name"
-    - "Plot tumor_size_cm for each patient"
-    - "Show each patient's tumor size as a bar chart"
+    - "Make a bar chart of age by patient name"
+    - "Plot age for each patient"
+    - "Show patient vs age as a bar chart"
   code: |
     library(ggplot2)
     ggplot(<data_var>, aes(x = name, y = tumor_size_cm)) +
