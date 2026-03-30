@@ -5,8 +5,12 @@
 # and reacts to it. user2 is a UserTurn containing only ContentToolResult 
 # objects (no user text).
 #
-# This gives us an entry point to tell the model that it called the 
-# run R code tool with known (to us) faulty code.
+# This gives us an entry point to tell the model that it called the
+# run R code tool with known (to us) faulty code. Because user2 is
+# submitted through chat_impl(), the model actually responds to the
+# injected plot before the next scripted turn (the nudge). This is
+# what makes the C vs P distinction possible in scoring: the model
+# has a chance to identify the issue unprompted.
 chat_inject <- function(chat, user, assistant, user2) {
   chat$add_turn(user = user, assistant = assistant, log_tokens = FALSE)
 
