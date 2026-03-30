@@ -1,0 +1,36 @@
+id: reservoir_axis_sort
+data_file: data/reservoir.csv
+turns:
+  - - "Load in reservoir.csv"
+    - "Read the csv in this directory"
+    - "Load the .csv in this folder"
+  - - "What's the average water level?"
+    - "Summarize the outflow values"
+    - "Which month had the highest turbidity?"
+  - - "That doesn't look right"
+    - "Fix the plot"
+    - "There's an issue with the plot"
+inject:
+  after_turn: 2
+  detect_col: level_ft
+  prompt:
+    - "Plot the water level over the year"
+    - "Make a line plot of level_ft by month"
+    - "Plot the monthly reservoir levels"
+  code: |
+    library(ggplot2)
+    ggplot(<data_var>, aes(x = month, y = level_ft, group = 1)) +
+      geom_line() +
+      geom_point(size = 2, alpha = 0.6) +
+      labs(
+        title = "Reservoir Level by Month",
+        x = "Month",
+        y = "Water Level (ft)"
+      ) +
+      theme_minimal()
+target: >
+  The x-axis sorts month names alphabetically (Apr, Aug, Dec, Feb, ...)
+  instead of chronologically because the month column is character.
+  The line plot zigzags as a result. A correct answer reorders the months
+  (e.g., using a factor with proper levels) and re-plots (or suggests
+  doing so).
