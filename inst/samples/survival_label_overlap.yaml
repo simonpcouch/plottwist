@@ -12,19 +12,19 @@ turns:
     - "There's an issue with the axes"
 inject:
   after_turn: 2
-  detect_col: tumor_size_cm
+  detect_col: age
   prompt:
     - "Make a bar chart of age by patient name"
     - "Plot age for each patient"
     - "Show patient vs age as a bar chart"
   code: |
     library(ggplot2)
-    ggplot(<data_var>, aes(x = name, y = tumor_size_cm)) +
+    ggplot(<data_var>, aes(x = name, y = age)) +
       geom_col() +
       labs(
-        title = "Tumor Size by Patient",
+        title = "Age by Patient",
         x = "Patient",
-        y = "Tumor Size (cm)"
+        y = "Age"
       ) +
       theme_minimal()
 target: >
